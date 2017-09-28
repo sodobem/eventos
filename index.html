@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/pt-br.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/locale-all.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css">
+    <link media="print" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+
+
+    <script>
+
+var eventos = [];
+
+var peer = new Peer('publicador'+ Math.random().toString().replace('0.', ''), {host: 'localhost', port: 9000, path: '/'});
+
+var conn = peer.connect('moderador');
+
+conn.on('open', function(){
+
+  conn.on('data', function(eventos){
+
+
+    $('#calendar').fullCalendar({
+		    locale: 'pt-BR',
+
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'listDay,listWeek,month'
+			},
+
+			buttonText: {
+                today:    'Hoje',
+                month:    'Mês',
+                week:     'Semana',
+                day:      'Dia'
+            },
+
+			defaultView: 'listWeek',
+
+            views: {
+                week: {
+                    duration: { days: 2 }
+                }
+            },
+
+
+			navLinks: true, // can click day/week names to navigate views
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			events: eventos
+		});
+
+  });
+});
+
+
+peer.on('connection', function(conn) {
+  alert('connection');
+
+});
+
+
+
+	$(document).ready(function() {
+
+
+
+        $('input[value=Salvar]').on('click', function() {
+            var event = {
+               title: $('[name=title]').val(),
+               start: $('[name=start]').val()
+            };
+
+            $('#calendar').fullCalendar('renderEvent', event, true);
+
+            conn.send(event);
+
+        });
+
+	});
+    </script>
+    <style>
+
+
+	body {
+		/*margin: 40px 10px;*/
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+	#calendar {
+		/*max-width: 900px;*/
+		margin: 0 auto;
+	}
+
+  label {
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  input {
+    display: block;
+  }
+
+  input[type=button] {
+    margin-top: 10px;
+    height: 30px;
+  }
+
+  input[type=text] {
+    width: 90%;
+    height: 25px;
+  }
+
+  .compartilhar {
+    position: fixed;
+    margin-top: 15px;
+    right: 8px;
+    bottom: 8px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: lightgreen;
+
+  }
+
+  .compartilhar a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+
+    </style>
+</head>
+<body>
+<div id='calendar'></div>
+
+<label>Descrição:</label> <input name="title" type="text">
+<label>Data:</label> <input name="start" type="text">
+<label>Local:</label> <input name="place" type="text">
+<input type="button" value="Salvar">
+<div class="compartilhar"><i class="fa fa-share-alt"></i> <a href="whatsapp://send?text=//sodobem.github.io/eventos">Compartilhar</a></div>
+</body>
+</html>
