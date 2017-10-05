@@ -105,6 +105,8 @@
          $('#calendar').show();
        }
 
+       exibirOuNaoOBotaoCompartilhar();
+
         $('input[value=Salvar]').on('click', function() {
             var event = {
                title: $('[name=title]').val(),
