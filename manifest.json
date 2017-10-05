@@ -13,7 +13,7 @@
     "prefer_related_applications": false,
     "icons": [{
       "src": "icon.png",
-      "sizes": "16x16 32x32 64x64 128x128 256x256",
+      "sizes": "16x16 32x32 64x64 128x128 192x192 256x256",
       "type": "image/png"
     }],
     "background_color": "white"
