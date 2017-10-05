@@ -18,86 +18,85 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.14/peer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.14/peer.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/manupjs@1.0.0/manup.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/manupjs@1.0.0/manup.js"></script>
 
-<script src="pwabuilder-sw-register.js"></script>
+    <script src="pwabuilder-sw-register.js"></script>
 
-    <script>
+  <script>
 
-var eventos = [];
-
-var peer = new Peer('publicador'+ Math.random().toString().replace('0.', ''), {host: 'sodobem.linkpc.net', port: 9000, path: '/'});
-
-var conn = peer.connect('moderador');
-
-conn.on('open', function(){
-
-  conn.on('data', function(eventos){
+    function mostrarCalendario(dados) {
 
 
-    $('#calendar').fullCalendar({
-		    locale: 'pt-BR',
+        $('#calendar').fullCalendar({
+          locale: 'pt-BR',
 
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'listDay,listWeek,month'
-			},
+          header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'listDay,listWeek,month'
+          },
 
-			buttonText: {
-                today:    'Hoje',
-                month:    'Mês',
-                week:     'Semana',
-                day:      'Dia'
-            },
+          buttonText: {
+              today:    'Hoje',
+              month:    'Mês',
+              week:     'Semana',
+              day:      'Dia'
+          },
 
-			defaultView: 'listWeek',
+          defaultView: 'listWeek',
 
-            views: {
-                week: {
-                    duration: { days: 2 }
-                }
-            },
-
-
-			navLinks: true, // can click day/week names to navigate views
-			editable: true,
-			eventLimit: true, // allow "more" link when too many events
-			events: eventos
-		});
-
-  });
-});
+          views: {
+              week: {
+                  duration: { days: 2 }
+              }
+          },
 
 
-peer.on('connection', function(conn) {
-  alert('connection');
+          navLinks: true, // can click day/week names to navigate views
+          editable: true,
+          eventLimit: true, // allow "more" link when too many events
+          events: dados
+        });
 
-});
+    }
+
+    var eventos = [];
+
+    var peer = new Peer('publicador'+ Math.random().toString().replace('0.', ''), {host: 'sodobem.linkpc.net', port: 9000, path: '/'});
+
+    var conn = peer.connect('moderador');
+
+    peer.on('error', function(e) {
+      console.log('Erro: ', e);
+      if (e.type == 'network') {
+        console.log('O moderador não está online.');
+      }
+    });
+
+    conn.on('open', function(){
+      conn.on('data', function(dados){
+        mostrarCalendario(dados);
+      });
+    });
 
 
+    peer.on('connection', function(conn) {
+    });
 
-	$(document).ready(function() {
-
-
-
+	   $(document).ready(function() {
         $('input[value=Salvar]').on('click', function() {
             var event = {
                title: $('[name=title]').val(),
                start: $('[name=start]').val()
             };
-
             $('#calendar').fullCalendar('renderEvent', event, true);
-
             conn.send(event);
-
         });
-
-	});
-    </script>
-    <style>
+	  });
+  </script>
+  <style>
 
 
 	body {
@@ -131,7 +130,7 @@ peer.on('connection', function(conn) {
     height: 25px;
   }
 
-  .compartilhar {
+  .compartilhar, .adicionar {
     position: fixed;
     margin-top: 15px;
     right: 8px;
@@ -149,15 +148,17 @@ peer.on('connection', function(conn) {
     font-weight: bold;
   }
 
-    </style>
+  </style>
 </head>
 <body>
-<div id='calendar'></div>
-
-<label>Descrição:</label> <input name="title" type="text">
-<label>Data:</label> <input name="start" type="text">
-<label>Local:</label> <input name="place" type="text">
-<input type="button" value="Salvar">
-<div class="compartilhar"><i class="fa fa-share-alt"></i> <a href="whatsapp://send?text=//sodobem.github.io/eventos">Compartilhar</a></div>
+<div id="calendar"></div>
+<div id="new-event">
+  <label>Descrição:</label> <input name="title" type="text">
+  <label>Data:</label> <input name="start" type="text">
+  <label>Local:</label> <input name="place" type="text">
+  <input type="button" value="Salvar">
+</div>
+<div class="adicionar"><i class="fa fa-plus"></i></div>
+<div class="compartilhar"><i class="fa fa-share-alt"></i> <a href="whatsapp://send?text=//sodobem.github.io/eventos"></a></div>
 </body>
 </html>
