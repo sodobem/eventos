@@ -11,6 +11,10 @@
     "orientation": "any",
     "related_applications": [],
     "prefer_related_applications": false,
-    "icons": [],
+    "icons": {
+      "16": "icon.png",
+      "32": "icon.png",
+      "128": "icon.png"
+    },
     "background_color": "white"
 }
