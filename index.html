@@ -88,24 +88,10 @@
     });
 
 	   $(document).ready(function() {
-
-       function exibirOuNaoOBotaoCompartilhar(){
-         $.ajax({
-           type: 'HEAD',
-           url: 'whatsapp://send?text=//sodobem.github.io/eventos',
-           success: function() {
-             $('.compartilhar').show();
-           },
-           error: function() {}
-         });
-       }
-
        function voltarParaCalendario() {
          $('#new-event').hide();
          $('#calendar').show();
        }
-
-       exibirOuNaoOBotaoCompartilhar();
 
         $('input[value=Salvar]').on('click', function() {
             var event = {
@@ -166,10 +152,6 @@
     right: 8px;
     bottom: 28px;
     z-index: 1;
-  }
-
-  .compartilhar {
-    display: none;
   }
 
   .compartilhar, .adicionar {
