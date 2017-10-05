@@ -69,9 +69,9 @@
     var conn = peer.connect('moderador');
 
     peer.on('error', function(e) {
-      console.log('Erro: ', e);
+      console.error('Erro: ', e);
       if (e.type == 'network') {
-        console.log('O moderador não está online.');
+        console.error('O moderador está offline.');
       }
     });
 
