@@ -72,6 +72,7 @@
       console.error('Erro: ', e);
       if (e.type == 'network') {
         console.error('O moderador está offline.');
+        mostrarCalendario([]);
       }
     });
 
