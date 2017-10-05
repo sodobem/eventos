@@ -88,6 +88,18 @@
     });
 
 	   $(document).ready(function() {
+
+       function exibirOuNaoOBotaoCompartilhar(){
+         $.ajax({
+           type: 'HEAD',
+           url: 'whatsapp://send?text=//sodobem.github.io/eventos',
+           success: function() {
+             $('.compartilhar').show();
+           },
+           error: function() {}
+         });
+       }
+
         $('input[value=Salvar]').on('click', function() {
             var event = {
                title: $('[name=title]').val(),
@@ -95,6 +107,14 @@
             };
             $('#calendar').fullCalendar('renderEvent', event, true);
             conn.send(event);
+
+            $('#new-event').hide();
+            $('#calendar').show();
+        });
+
+        $('.adicionar').on('click', function() {
+          $('#new-event').show();
+          $('#calendar').hide();
         });
 	  });
   </script>
@@ -132,22 +152,36 @@
     height: 25px;
   }
 
-  .compartilhar, .adicionar {
+  #buttons {
     position: fixed;
     margin-top: 15px;
     right: 8px;
-    bottom: 8px;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: lightgreen;
-
+    bottom: 28px;
+    z-index: 1;
   }
 
-  .compartilhar a {
+  .compartilhar {
+    display: none;
+  }
+
+  .compartilhar, .adicionar {
     text-decoration: none;
     color: black;
     font-weight: bold;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: lightgreen;
+    border-radius: 30px;
+    text-align: center;
+  }
+
+  .compartilhar i, .adicionar i {
+    margin-top: 10px;
+  }
+
+  #new-event {
+    display: none;
   }
 
   </style>
@@ -158,9 +192,12 @@
   <label>Descrição:</label> <input name="title" type="text">
   <label>Data:</label> <input name="start" type="text">
   <label>Local:</label> <input name="place" type="text">
-  <input type="button" value="Salvar">
+  <input type="button" value="Voltar">
+  <input type="button" value="Salvar">  
 </div>
-<div class="adicionar"><i class="fa fa-plus"></i></div>
-<div class="compartilhar"><i class="fa fa-share-alt"></i> <a href="whatsapp://send?text=//sodobem.github.io/eventos"></a></div>
+<div id="buttons">
+  <a class="adicionar" href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+  <a class="compartilhar" href="whatsapp://send?text=//sodobem.github.io/eventos"><i class="fa fa-share-alt"></i></a>
+</div>
 </body>
 </html>
