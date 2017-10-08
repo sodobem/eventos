@@ -7,6 +7,10 @@
     <meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.min.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/pt-br.js"></script>
 
@@ -88,9 +92,22 @@
     });
 
 	   $(document).ready(function() {
+
+       $.datetimepicker.setLocale('pt-BR');
+       $('[name=start]').datetimepicker({
+         format: 'd/m/Y H:i',
+         inline: true,
+         step: 15,
+         roundTime: 'ceil',
+         minDate: moment().format('DD/MM/YYYY'),
+         defaultSelect: false
+       });
+       $('[name=start]').datetimepicker('reset');
+
        function voltarParaCalendario() {
          $('#new-event').hide();
          $('#calendar').show();
+         $('#buttons').show();
        }
 
         $('input[value=Salvar]').on('click', function() {
@@ -111,6 +128,7 @@
         $('.adicionar').on('click', function() {
           $('#new-event').show();
           $('#calendar').hide();
+          $('#buttons').hide();
         });
 	  });
   </script>
@@ -142,7 +160,7 @@
   }
 
   input[type=text] {
-    width: 90%;
+    width: 100%;
     height: 25px;
   }
 
@@ -185,7 +203,7 @@
 <div id="calendar"></div>
 <div id="new-event">
   <label>Descrição:</label> <input name="title" type="text">
-  <label>Data:</label> <input name="start" type="text">
+  <label>Data e hora:</label> <input name="start" type="text">
   <label>Local:</label> <input name="place" type="text">
   <input type="button" value="Voltar">
   <input type="button" value="Salvar">
