@@ -149,9 +149,11 @@
   #buttons {
     position: fixed;
     margin-top: 15px;
-    right: 8px;
+    right: 0;
     bottom: 28px;
     z-index: 1;
+    width: 120px;
+    height: 150px;
   }
 
   .compartilhar, .adicionar {
@@ -162,12 +164,15 @@
     border-radius: 5px;
     padding: 20px;
     background-color: lightgreen;
-    border-radius: 50px;
+    border-radius: 100px;
     text-align: center;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
   }
 
   .compartilhar i, .adicionar i {
-    margin-top: 10px;
+    vertical-align: text-bottom;
   }
 
   #new-event {
