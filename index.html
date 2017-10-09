@@ -95,11 +95,11 @@
 
        $.datetimepicker.setLocale('pt-BR');
        $('[name=start]').datetimepicker({
-         format: 'd/m/Y H:i',
+         format: 'm/d/Y H:i',
          inline: true,
          step: 15,
          roundTime: 'ceil',
-         minDate: moment().format('DD/MM/YYYY'),
+         minDate: moment().format('MM/DD/YYYY'),
          defaultSelect: false
        });
        $('[name=start]').datetimepicker('reset');
@@ -113,7 +113,7 @@
         $('input[value=Salvar]').on('click', function() {
             var event = {
                title: $('[name=title]').val(),
-               start: $('[name=start]').val()
+               start: $('[name=start]').val() || moment().format('MM/DD/YYYY HH:MM:SS')
             };
             $('#calendar').fullCalendar('renderEvent', event, true);
             conn.send(event);
@@ -146,7 +146,7 @@
 	}
 
   label {
-    display: inline-block;
+    display: block;
     margin-top: 10px;
   }
 
