@@ -94,15 +94,24 @@
 	   $(document).ready(function() {
 
        $.datetimepicker.setLocale('pt-BR');
-       $('[name=start]').datetimepicker({
-         format: 'm/d/Y H:i',
+       $('[name=start-date]').datetimepicker({
+         format: 'm/d/Y',
+         inline: true,
+         minDate: moment().format('MM/DD/YYYY'),
+         defaultSelect: false,
+         timepicker: false
+       });
+       $('[name=start-date]').datetimepicker('reset');
+
+       $('[name=start-time]').datetimepicker({
+         format: 'H:i',
          inline: true,
          step: 15,
          roundTime: 'ceil',
-         minDate: moment().format('MM/DD/YYYY'),
-         defaultSelect: false
+         defaultSelect: false,
+         datepicker: false
        });
-       $('[name=start]').datetimepicker('reset');
+       $('[name=start-time]').datetimepicker('reset');
 
        function voltarParaCalendario() {
          $('#new-event').hide();
@@ -111,9 +120,15 @@
        }
 
         $('input[value=Salvar]').on('click', function() {
+          var start = $('[name=start-date]').val();
+          if (start) {
+            start = start + ' ' + $('[name=start-time]').val();
+          } else {
+            start = moment().format('MM/DD/YYYY HH:MM:SS');
+          }
             var event = {
                title: $('[name=title]').val(),
-               start: $('[name=start]').val() || moment().format('MM/DD/YYYY HH:MM:SS')
+               start: start
             };
             $('#calendar').fullCalendar('renderEvent', event, true);
             conn.send(event);
@@ -203,7 +218,8 @@
 <div id="calendar"></div>
 <div id="new-event">
   <label>Descrição:</label> <input name="title" type="text">
-  <label>Data e hora:</label> <input name="start" type="text">
+  <label>Data:</label> <input name="start-date" type="text">
+  <label>Hora:</label> <input name="start-time" type="text">
   <label>Local:</label> <input name="place" type="text">
   <input type="button" value="Voltar">
   <input type="button" value="Salvar">
